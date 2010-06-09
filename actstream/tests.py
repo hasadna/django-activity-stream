@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime, timedelta
 from django.db import models
 from django.test.client import Client
 from django.contrib.auth.models import User, Group
@@ -22,7 +23,10 @@ class ActivityTestCase(unittest.TestCase):
         
         # User1 joins group
         self.user1.groups.add(self.group)
-        action.send(self.user1,verb='joined',target=self.group)
+        self.yesterday = datetime.now() - timedelta(days=1)
+
+        action.send(self.user1,verb='joined',target=self.group, 
+            description='hello group', timestamp=self.yesterday)
         
         # User1 follows User2
         follow(self.user1, self.user2)
@@ -51,7 +55,11 @@ class ActivityTestCase(unittest.TestCase):
 
     def test_user1(self):
         self.assertEqual(map(unicode, actor_stream(self.user1)),
-            [u'admin commented on CoolGroup 0 minutes ago', u'admin started following Two 0 minutes ago', u'admin joined CoolGroup 0 minutes ago'])
+            [u'admin commented on CoolGroup 0 minutes ago', u'admin started following Two 0 minutes ago', u'admin joined CoolGroup 1 day ago'])
+        first_activity = actor_stream(self.user1).get(verb='joined')
+        self.assertEqual(first_activity.timestamp, self.yesterday)
+        self.assertEqual(first_activity.description, 'hello group')
+
         
     def test_user2(self):
         self.assertEqual(map(unicode, actor_stream(self.user2)),

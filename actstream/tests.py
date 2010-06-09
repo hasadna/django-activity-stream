@@ -6,8 +6,9 @@ from django.contrib.comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 
+from actstream import user_stream, model_stream, actor_stream, follow
 from actstream.signals import action
-from actstream.models import Action, Follow, follow, user_stream, model_stream, actor_stream
+from actstream.models import Action, Follow
 from testapp.models import Player
 
 class ActivityTestCase(unittest.TestCase):

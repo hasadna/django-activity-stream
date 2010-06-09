@@ -6,7 +6,7 @@ from django.contrib.syndication.views import Feed
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
-from actstream.models import actor_stream, model_stream, user_stream
+from actstream import actor_stream, model_stream, user_stream
 
 class ObjectActivityFeed(Feed):
     def get_object(self, request, content_type_id, object_id):

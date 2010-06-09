@@ -4,8 +4,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
-
-from actstream.models import Follow, Action, user_stream, actor_stream, model_stream
+from actstream import user_stream, actor_stream, model_stream
+from actstream.models import Follow, Action
 
 @login_required
 def follow_unfollow(request, content_type_id, object_id, follow=True):

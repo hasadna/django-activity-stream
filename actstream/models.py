@@ -1,3 +1,4 @@
+from datetime import datetime
 from operator import or_
 from django.db import models
 from django.db.models.query import QuerySet
@@ -89,7 +90,7 @@ class Action(models.Model):
     target_object_id = models.PositiveIntegerField(blank=True,null=True) 
     target = generic.GenericForeignKey('target_content_type','target_object_id')
     
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField(default=datetime.now)
     
     public = models.BooleanField(default=True)
     

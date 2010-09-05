@@ -1,4 +1,3 @@
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from signals import action
 from models import Follow, Action
@@ -20,7 +19,7 @@ def follow(user, actor):
         follow(request.user, group)
     
     """
-    action.send(user, verb=_('started following'), target=actor)
+    action.send(user, verb='started following', target=actor)
     return Follow.objects.create(user = user, object_id = actor.pk, 
         content_type = ContentType.objects.get_for_model(actor))
     
@@ -41,7 +40,7 @@ def unfollow(user, actor, send_action=False):
     Follow.objects.filter(user = user, object_id = actor.pk, 
         content_type = ContentType.objects.get_for_model(actor)).delete()
     if send_action:
-        action.send(user, verb=_('stopped following'), target=actor)
+        action.send(user, verb='stopped following', target=actor)
     
 def actor_stream(actor):
     return Action.objects.stream_for_actor(actor)

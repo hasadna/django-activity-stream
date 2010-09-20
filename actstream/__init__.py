@@ -4,7 +4,7 @@ from models import Follow, Action
 
 __version__ = '0.2'
 
-def follow(user, actor):
+def follow(user, actor, send_action=True):
     """
     Creates a ``User`` -> ``Actor`` follow relationship such that the actor's activities appear in the user's stream.
     Also sends the ``<user> started following <actor>`` action signal.
@@ -19,7 +19,8 @@ def follow(user, actor):
         follow(request.user, group)
     
     """
-    action.send(user, verb='started following', target=actor)
+    if send_action:
+        action.send(user, verb='started following', target=actor)
     return Follow.objects.create(user = user, object_id = actor.pk, 
         content_type = ContentType.objects.get_for_model(actor))
     

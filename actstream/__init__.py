@@ -19,10 +19,11 @@ def follow(user, actor, send_action=True):
         follow(request.user, group)
     
     """
-    if send_action:
-        action.send(user, verb='started following', target=actor)
-    return Follow.objects.create(user = user, object_id = actor.pk, 
+    get_val, created = Follow.objects.get_or_create(user = user, object_id = actor.pk,
         content_type = ContentType.objects.get_for_model(actor))
+    if created and send_action:
+        action.send(user, verb='started following', target=actor)
+    return ret_val
     
 def unfollow(user, actor, send_action=False):
     """

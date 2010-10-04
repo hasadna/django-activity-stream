@@ -19,7 +19,7 @@ def follow(user, actor, send_action=True):
         follow(request.user, group)
     
     """
-    get_val, created = Follow.objects.get_or_create(user = user, object_id = actor.pk,
+    ret_val, created = Follow.objects.get_or_create(user = user, object_id = actor.pk,
         content_type = ContentType.objects.get_for_model(actor))
     if created and send_action:
         action.send(user, verb='started following', target=actor)

@@ -1,8 +1,7 @@
 from distutils.core import setup
-from actstream import __version__
 
 setup(name='django-activity-stream',
-      version=__version__,
+      version='0.2',
       description='Generate generic activity streams from the actions on your site. Users can follow any actor\'s activities for personalized streams.',
       long_description=open('README.rst').read(),
       author='Justin Quick',

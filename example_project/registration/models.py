@@ -7,8 +7,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db import transaction
 from django.template.loader import render_to_string
-from django.utils.hashcompat import sha_constructor
 from django.utils.translation import ugettext_lazy as _
+try:
+    from hashlib import sha1
+except ImportError:
+    from django.utils.hashcompat import sha_constructor as sha1
 
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
@@ -92,11 +95,11 @@ class RegistrationManager(models.Manager):
         username and a random salt.
         
         """
-        salt = sha_constructor(str(random.random())).hexdigest()[:5]
+        salt = sha1(str(random.random())).hexdigest()[:5]
         username = user.username
         if isinstance(username, unicode):
             username = username.encode('utf-8')
-        activation_key = sha_constructor(salt+username).hexdigest()
+        activation_key = sha1(salt+username).hexdigest()
         return self.create(user=user,
                            activation_key=activation_key)
         
